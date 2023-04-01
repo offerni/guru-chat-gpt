@@ -2,16 +2,22 @@ package search
 
 import "github.com/offerni/guruchatgpt"
 
-type service struct {
-	guruRepo guruchatgpt.GuruRepository
+type Service struct {
+	Credentials guruchatgpt.Credentials
+	GuruRepo    guruchatgpt.GuruRepository
+	OpenAIRepo  guruchatgpt.OpenAIRepository
 }
 
 type NewServiceOpts struct {
-	GuruRepository guruchatgpt.GuruRepository
+	Credentials      guruchatgpt.Credentials
+	GuruRepository   guruchatgpt.GuruRepository
+	OpenAiRepository guruchatgpt.OpenAIRepository
 }
 
-func NewService(opts NewServiceOpts) (*service, error) {
-	return &service{
-		guruRepo: opts.GuruRepository,
+func NewService(opts NewServiceOpts) (*Service, error) {
+	return &Service{
+		Credentials: opts.Credentials,
+		GuruRepo:    opts.GuruRepository,
+		OpenAIRepo:  opts.OpenAiRepository,
 	}, nil
 }
