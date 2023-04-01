@@ -14,30 +14,30 @@ type ListGuruCards struct {
 }
 
 type Card struct {
-	ID                    string
-	Content               string
-	Owner                 Owner
-	LastModified          CustomDate
-	TeamID                string
-	Collection            Collection
-	LastVerified          CustomDate
-	LastVerifiedBy        Owner
-	LastModifiedBy        Owner
-	PreferredPhrase       string
-	ShareStatus           string
-	HTMLContent           bool
-	VerificationInterval  int
-	VerificationType      string
-	Slug                  string
-	DateCreated           CustomDate
-	CardType              string
-	ContentSchemaVersion  string
-	Followed              bool
-	VerificationState     string
-	OriginalOwner         Owner
-	NextVerificationDate  CustomDate
-	GuruSlateToolsVersion string
-	VerificationReasons   []string
+	// ID                    string
+	Content string
+	// Owner                 Owner
+	// LastModified          CustomDate
+	// TeamID                string
+	// Collection            Collection
+	// LastVerified          CustomDate
+	// LastVerifiedBy        Owner
+	// LastModifiedBy        Owner
+	PreferredPhrase string
+	// ShareStatus           string
+	// HTMLContent           bool
+	// VerificationInterval  int
+	// VerificationType      string
+	// Slug                  string
+	// DateCreated           CustomDate
+	// CardType              string
+	// ContentSchemaVersion  string
+	// Followed              bool
+	// VerificationState     string
+	// OriginalOwner         Owner
+	// NextVerificationDate  CustomDate
+	// GuruSlateToolsVersion string
+	// VerificationReasons   []string
 }
 
 type Owner struct {
