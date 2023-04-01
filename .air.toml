@@ -1,0 +1,45 @@
+# Air configuration file
+
+# Define directories
+root = "."
+testdata_dir = "testdata"
+tmp_dir = "tmp"
+
+# Build options
+[build]
+  args_bin = []
+  bin = "./main"
+  cmd = "go build -o ./main ./cmd"
+  delay = 1000
+  exclude_dir = ["assets", "tmp", "vendor", "testdata"]
+  exclude_file = []
+  exclude_regex = ["_test.go"]
+  exclude_unchanged = false
+  follow_symlink = false
+  full_bin = ""
+  include_dir = []
+  include_ext = ["go", "tpl", "tmpl", "html"]
+  kill_delay = "0s"
+  log = "build-errors.log"
+  send_interrupt = false
+  stop_on_error = true
+
+# Color options
+[color]
+  app = ""
+  build = "yellow"
+  main = "magenta"
+  runner = "green"
+  watcher = "cyan"
+
+# Log options
+[log]
+  time = false
+
+# Miscellaneous options
+[misc]
+  clean_on_exit = false
+
+# Screen options
+[screen]
+  clear_on_rebuild = false
