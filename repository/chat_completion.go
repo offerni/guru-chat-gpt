@@ -13,7 +13,10 @@ import (
 )
 
 const openAIBaseUrl = "https://api.openai.com/v1"
-const messageLimitHardcap = 5000 // tweak here to save some token usage from the API when testing, hardcap should around 5000 by default
+
+// Tweak here as needed to save some request tokens, the lower the number the
+// smaller is the dataset generated so more generic the answer will be
+const messageLimitHardcap = 100
 
 func (or *OpenAIRepo) ChatCompletion(
 	opts guruchatgpt.ChatCompletionRequestOpts,
@@ -37,16 +40,13 @@ func (or *OpenAIRepo) ChatCompletion(
 	// seems this limit is per payload and not per message a possible solution
 	// could be finding a way to store this data accurately and safely so the api
 	// could tap into that
+	// spew.Dump(string(jsonCards))
 	cardsDatasetSlice := splitString(string(jsonCards[:messageLimitHardcap]), messageLimitHardcap)
 
 	messages := []Message{
 		{
 			Role:    "system",
-			Content: "You're a helpful that searches and provides answers as concisely as possible only and exclusively from the given Guru Cards",
-		},
-		{
-			Role:    "system",
-			Content: "Cite your refference as Guru Card if the infomation was found there",
+			Content: "You're a helpful assistant that searches and provides answers as concisely as possible the given dataset known as Guru Cards",
 		},
 	}
 
@@ -62,7 +62,7 @@ func (or *OpenAIRepo) ChatCompletion(
 		Content: opts.Message,
 	})
 
-	spew.Dump(messages)
+	// spew.Dump(messages)
 
 	reqBody := OpenAIChatCompletionRequest{
 		Model:    or.Chat.CompletionRequestOpts.Model,

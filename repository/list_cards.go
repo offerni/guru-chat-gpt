@@ -8,10 +8,10 @@ import (
 	"github.com/offerni/guruchatgpt"
 )
 
-const guruApiBareUrl = "https://api.getguru.com/api/v1"
+const guruApiBaseUrl = "https://api.getguru.com/api/v1"
 
 func (gr *GuruRepo) ListCards() (*guruchatgpt.ListGuruCards, error) {
-	req, err := http.NewRequest(http.MethodGet, guruApiBareUrl+"/cards", nil)
+	req, err := http.NewRequest(http.MethodGet, guruApiBaseUrl+"/cards", nil)
 	if err != nil {
 		return nil, err
 	}
