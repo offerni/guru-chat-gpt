@@ -1,7 +1,6 @@
 package search
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -18,21 +17,12 @@ func (svc *Service) Handler(c echo.Context) error {
 		})
 	}
 
-	jsonCards, err := json.Marshal(cards.Cards[0])
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": err.Error(),
-		})
-	}
-
-	stringfiedCards := string(jsonCards)
-
 	chatGptResponse, err := svc.OpenAIRepo.ChatCompletion(guruchatgpt.ChatCompletionRequestOpts{
 		Message: message,
 		Credentials: guruchatgpt.Credentials{
 			BearerToken: svc.Credentials.BearerToken,
 		},
-		Dataset: stringfiedCards,
+		Dataset: cards,
 	})
 
 	if err != nil {

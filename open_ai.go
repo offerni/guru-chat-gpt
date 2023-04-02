@@ -3,7 +3,7 @@ package guruchatgpt
 type ChatCompletionRequestOpts struct {
 	Message     string
 	Credentials Credentials
-	Dataset     string
+	Dataset     any
 }
 
 type Credentials struct {
