@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
+	"io/ioutil"
 	"net/http"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/offerni/guruchatgpt"
 )
 
@@ -20,11 +21,21 @@ func (or *OpenAIRepo) ChatCompletion(
 		Model: "gpt-3.5-turbo",
 		Messages: []Message{
 			{
+				Role:    "system",
+				Content: "You're a helpful that searches and provides answers as concisely as possible and links when available given these Guru Cards:" + opts.Dataset,
+			},
+			{
+				Role:    "system",
+				Content: "Cite your refference as Guru Card",
+			},
+			{
 				Role:    "user",
 				Content: opts.Message,
 			},
 		},
 	}
+
+	spew.Dump(opts.Dataset)
 
 	reqBodyBytes, err := json.Marshal(&reqBody)
 	if err != nil {
@@ -39,7 +50,7 @@ func (or *OpenAIRepo) ChatCompletion(
 	req.Header.Set("Authorization", "Bearer "+opts.Credentials.BearerToken)
 	req.Header.Set("Content-Type", "application/json")
 
-	log.Println("request body:", bytes.NewBuffer(reqBodyBytes))
+	// log.Println("request body:", bytes.NewBuffer(reqBodyBytes))
 
 	client := http.DefaultClient
 	resp, err := client.Do(req)
@@ -47,6 +58,11 @@ func (or *OpenAIRepo) ChatCompletion(
 		return nil, err
 	}
 	if resp.StatusCode != http.StatusOK {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+		spew.Dump(string(body))
 		return nil, fmt.Errorf("HTTP request failed with status code: %d", resp.StatusCode)
 	}
 	defer resp.Body.Close()
