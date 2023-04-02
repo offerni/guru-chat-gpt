@@ -10,6 +10,8 @@ import (
 	"github.com/offerni/guruchatgpt"
 )
 
+const openAIBaseUrl = "https://api.openai.com/v1"
+
 func (or *OpenAIRepo) ChatCompletion(
 	opts guruchatgpt.ChatCompletionRequestOpts,
 ) (*guruchatgpt.ChatCompletionResponse, error) {
@@ -29,7 +31,7 @@ func (or *OpenAIRepo) ChatCompletion(
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPost, "https://api.openai.com/v1/chat/completions", bytes.NewBuffer(reqBodyBytes))
+	req, err := http.NewRequest(http.MethodPost, openAIBaseUrl+"/chat/completions", bytes.NewBuffer(reqBodyBytes))
 	if err != nil {
 		return nil, err
 	}
