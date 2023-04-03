@@ -3,8 +3,6 @@ module github.com/offerni/guruchatgpt
 go 1.19
 
 require (
-	github.com/antage/eventsource v0.0.0-20220422142129-c4aae935d5bd
-	github.com/davecgh/go-spew v1.1.1
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/microcosm-cc/bluemonday v1.0.23
