@@ -17,7 +17,7 @@ func (svc *Service) Handler(c echo.Context) error {
 		})
 	}
 
-	chatGptResponse, err := svc.OpenAIRepo.ChatCompletion(guruchatgpt.ChatCompletionRequestOpts{
+	err = svc.OpenAIRepo.ChatCompletion(c, guruchatgpt.ChatCompletionRequestOpts{
 		Message: message,
 		Credentials: guruchatgpt.Credentials{
 			BearerToken: svc.Credentials.BearerToken,
@@ -31,5 +31,5 @@ func (svc *Service) Handler(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, chatGptResponse)
+	return c.JSON(http.StatusNoContent, nil)
 }

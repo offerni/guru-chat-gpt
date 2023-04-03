@@ -1,5 +1,7 @@
 package guruchatgpt
 
+import "github.com/labstack/echo/v4"
+
 type ChatCompletionRequestOpts struct {
 	Message     string
 	Credentials Credentials
@@ -35,5 +37,5 @@ type Message struct {
 }
 
 type OpenAIRepository interface {
-	ChatCompletion(ChatCompletionRequestOpts) (*ChatCompletionResponse, error)
+	ChatCompletion(echo.Context, ChatCompletionRequestOpts) error
 }

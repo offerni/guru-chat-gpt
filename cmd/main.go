@@ -8,6 +8,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/offerni/guruchatgpt"
 	"github.com/offerni/guruchatgpt/repository"
 	"github.com/offerni/guruchatgpt/search"
@@ -18,6 +19,7 @@ func main() {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 	e := echo.New()
+	e.Use(middleware.CORS())
 
 	guruRepo, err := repository.NewGuruRepository(repository.NewGuruRepoOpts{
 		Username: os.Getenv("GURU_USERNAME"),
