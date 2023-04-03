@@ -3,9 +3,10 @@ package guruchatgpt
 import "github.com/labstack/echo/v4"
 
 type ChatCompletionRequestOpts struct {
-	Message     string
 	Credentials Credentials
 	Dataset     any
+	Message     string
+	SessionID   string
 }
 
 type Credentials struct {

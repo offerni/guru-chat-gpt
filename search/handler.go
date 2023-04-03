@@ -10,6 +10,7 @@ import (
 func (svc *Service) Handler(c echo.Context) error {
 	cards, err := svc.GuruRepo.ListCards()
 	message := c.QueryParam("message")
+	sessionID := c.QueryParam("sessionID")
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{
@@ -18,7 +19,8 @@ func (svc *Service) Handler(c echo.Context) error {
 	}
 
 	err = svc.OpenAIRepo.ChatCompletion(c, guruchatgpt.ChatCompletionRequestOpts{
-		Message: message,
+		Message:   message,
+		SessionID: sessionID,
 		Credentials: guruchatgpt.Credentials{
 			BearerToken: svc.Credentials.BearerToken,
 		},

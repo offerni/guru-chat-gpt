@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 
 	"github.com/offerni/guruchatgpt"
@@ -21,6 +22,8 @@ const openAIBaseUrl = "https://api.openai.com/v1"
 // Tweak here as needed to save some request tokens, the lower the number the
 // smaller is the dataset generated so more generic the answer will be
 const messageLimitThreshold = 5000
+
+var sessions = make(map[string]bool)
 
 func (or *OpenAIRepo) ChatCompletion(
 	c echo.Context,
@@ -51,7 +54,7 @@ func (or *OpenAIRepo) ChatCompletion(
 	// could be finding a way to store this data accurately and safely so the api
 	// could tap into that
 	// spew.Dump(string(jsonCards))
-	cardsDatasetSlice := splitString(string(jsonCards[:limit]), messageLimitThreshold)
+	cardsDatasetSlice := splitString(string(jsonCards[:limit]), limit)
 
 	// this is a mess, all this messages logic should be moved to the handler or
 	// to an intermediate business logic layer or something but good enough for now
@@ -107,7 +110,7 @@ func (or *OpenAIRepo) ChatCompletion(
 	}
 
 	if opts.Message != "" {
-		err = listenAndForwardEventStream(c, resp)
+		err = listenAndForwardEventStream(c, resp, opts)
 		if err != nil {
 			return err
 		}
@@ -116,7 +119,7 @@ func (or *OpenAIRepo) ChatCompletion(
 	return nil
 }
 
-func listenAndForwardEventStream(c echo.Context, resp *http.Response) error {
+func listenAndForwardEventStream(c echo.Context, resp *http.Response, opts guruchatgpt.ChatCompletionRequestOpts) error {
 	reader := bufio.NewReader(resp.Body)
 
 	setResponseHeaders(c.Response())
@@ -135,9 +138,19 @@ func listenAndForwardEventStream(c echo.Context, resp *http.Response) error {
 		}
 
 		if len(line) > 0 {
-			msg := fmt.Sprintf(string(line))
-			fmt.Fprintf(c.Response(), msg)
+			prepareAndSendSSE(c, line, opts)
 		}
+	}
+}
+
+func prepareAndSendSSE(c echo.Context, line []byte, opts guruchatgpt.ChatCompletionRequestOpts) {
+	msgID := uuid.New().String()
+	if opts.SessionID != "" {
+		sessions[opts.SessionID] = true
+	}
+	msg := fmt.Sprintf("id: %s\n%s", msgID, line)
+	if sessions[opts.SessionID] {
+		fmt.Fprintf(c.Response(), msg)
 	}
 }
 

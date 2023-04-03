@@ -3,6 +3,7 @@ module github.com/offerni/guruchatgpt
 go 1.19
 
 require (
+	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/microcosm-cc/bluemonday v1.0.23
