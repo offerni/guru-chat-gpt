@@ -20,7 +20,7 @@ const openAIBaseUrl = "https://api.openai.com/v1"
 
 // Tweak here as needed to save some request tokens, the lower the number the
 // smaller is the dataset generated so more generic the answer will be
-const messageLimitHardcap = 100
+const messageLimitThreshold = 5000
 
 func (or *OpenAIRepo) ChatCompletion(
 	c echo.Context,
@@ -39,13 +39,19 @@ func (or *OpenAIRepo) ChatCompletion(
 		return err
 	}
 
+	// if the messageLimitThreshold is greater than the len of jsonCards, redefine the limit
+	limit := messageLimitThreshold
+	if (len(jsonCards)) < messageLimitThreshold {
+		limit = len(jsonCards)
+	}
+
 	// Unfortunately gpt-3 API limits the message size to 4097 tokens which is not
 	// a lot, I've even tried breaking the messages into smaller chunks but it
 	// seems this limit is per payload and not per message a possible solution
 	// could be finding a way to store this data accurately and safely so the api
 	// could tap into that
 	// spew.Dump(string(jsonCards))
-	cardsDatasetSlice := splitString(string(jsonCards[:messageLimitHardcap]), messageLimitHardcap)
+	cardsDatasetSlice := splitString(string(jsonCards[:limit]), messageLimitThreshold)
 
 	// this is a mess, all this messages logic should be moved to the handler or
 	// to an intermediate business logic layer or something but good enough for now
