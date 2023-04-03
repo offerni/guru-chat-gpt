@@ -7,7 +7,9 @@ The main functionality is done but it needs better handling to summarize the dat
 
 Example:
 ```
-http://localhost:9091/search?message="Hello World"
+http://localhost:9091/search?sessionID=92bb3bca-c548-439c-baf8-77c37fb0d5e7&message="Hello World"
 ```
+* `message` is the promt the client wants to chat about
+* `sessionID` is required and ensures uniqueness preventing the wrong client to listen to the event sent
 
 This is a work in progress.
