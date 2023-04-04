@@ -12,4 +12,9 @@ http://localhost:9091/search?sessionID=92bb3bca-c548-439c-baf8-77c37fb0d5e7&mess
 * `message` is the promt the client wants to chat about
 * `sessionID` is required and ensures uniqueness preventing the wrong client to listen to the event sent
 
+# Known limitations
+- The current iteration doesn't keep the context of previous conversations due to limitations on how many token you can use and I decided to use as much as I could to feed the dataset (max tokens in gpt-3-5-turbo is 4097)
+- Very large datasets will probably be ignored due, again, to the API's limitation to 4097 tokens, a possible solution is to send chunks to gpt's API and ask it to synthesize it in x words.
+
+
 This is a work in progress.
